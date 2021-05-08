@@ -49,7 +49,7 @@ func (s *service) GetAccountInformation() error {
 		log.Printf("Decode fail %s", err)
 	}
 
-	fmt.Println(target)
+	fmt.Println(*target)
 
 	defer res.Body.Close()
 	return nil
