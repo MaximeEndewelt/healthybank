@@ -1,7 +1,7 @@
 package clients
 
 import (
-	"github.com/faceit/go-tools/logger"
+	"log"
 	"net/http"
 	"time"
 )
@@ -11,13 +11,11 @@ const (
 )
 
 type service struct {
-	lgr        *logger.StandardLogger
 	httpClient *http.Client
 }
 
 func New() StarlingClient {
 	return &service{
-		lgr: logger.Get(),
 		httpClient: &http.Client{
 			Timeout: 50 * time.Second,
 		},
@@ -28,7 +26,7 @@ func (s *service) GetAccountInformation() error {
 
 	req, err := http.NewRequest("GET", GetAccountInformation, nil)
 	if err != nil {
-		s.lgr.Errorf("Error initializing request", err)
+		log.Printf("Error initializing request: %s", err)
 	}
 
 	req.Header.Add("Authorization", "Bearer eyJhbGciOiJQUzI1NiIsInppcCI6IkdaSVAifQ")
@@ -36,13 +34,13 @@ func (s *service) GetAccountInformation() error {
 
 	res, err := s.httpClient.Do(req)
 	if err != nil {
-		s.lgr.Error(err)
+		log.Println(err)
 	}
 
 	if res.StatusCode > 400 {
-		s.lgr.Errorf("Bad request : %s", res.Body)
+		log.Printf("Bad request : %s", res.Body)
 	} else {
-		s.lgr.Infof("Good request : %s", res.Body)
+		log.Printf("Good request : %s", res.Body)
 	}
 
 	defer res.Body.Close()
