@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"healthybank/clients"
+
+	"healthybank.com/healthybank/clients"
 )
 
 func main() {
